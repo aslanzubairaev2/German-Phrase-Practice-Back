@@ -9,6 +9,15 @@ describe('API Tests', () => {
         jest.clearAllMocks();
     });
 
+    describe('GET /', () => {
+        it('should return welcome message', async () => {
+            const res = await request(app).get('/');
+
+            expect(res.status).toBe(200);
+            expect(res.body).toHaveProperty('message', 'Welcome to German Phrase Practice API');
+        });
+    });
+
     describe('GET /api/initial-data', () => {
         it('should return initial data successfully', async () => {
             const mockCategories = [{ id: 1, name: 'Basics', color: '#ff0000' }];

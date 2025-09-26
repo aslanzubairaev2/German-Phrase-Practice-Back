@@ -48,6 +48,11 @@ app.use('/api/phrases', phrasesRoutes);
 app.use('/api/categories', categoriesRoutes);
 app.use('/api', initialDataRoutes);
 
+// Root route
+app.get('/', (req, res) => {
+  res.json({ message: 'Welcome to German Phrase Practice API' });
+});
+
 // Обработка 404
 app.use(notFoundHandler);
 
