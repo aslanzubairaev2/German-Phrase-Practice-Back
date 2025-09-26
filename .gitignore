@@ -1,6 +1,5 @@
 .env
 /node_modules
-data
 .env.*.local
 .env.local
 .env.development.local
