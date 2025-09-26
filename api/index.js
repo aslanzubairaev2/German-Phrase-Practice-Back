@@ -6,6 +6,9 @@ const { apiLimiter, strictLimiter, readLimiter } = require('./middleware/rateLim
 
 const app = express();
 
+// Trust proxy for rate limiting (important for Vercel deployment)
+app.set('trust proxy', 1);
+
 // Логирование входящих запросов
 app.use((req, res, next) => {
   logger.info('Incoming request', {
