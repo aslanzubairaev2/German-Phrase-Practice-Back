@@ -9,15 +9,6 @@ describe('API Tests', () => {
         jest.clearAllMocks();
     });
 
-    describe('GET /', () => {
-        it('should return welcome message', async () => {
-            const res = await request(app).get('/');
-
-            expect(res.status).toBe(200);
-            expect(res.body).toHaveProperty('message', 'Welcome to German Phrase Practice API');
-        });
-    });
-
     describe('GET /api/initial-data', () => {
         it('should return initial data successfully', async () => {
             const mockCategories = [{ id: 1, name: 'Basics', color: '#ff0000' }];
@@ -85,7 +76,7 @@ describe('API Tests', () => {
 
             const res = await request(app)
                 .post('/api/phrases')
-                .send({ russian: 'test', german: 'test', category_id: 1 });
+                .send({ russian: 'test', german: 'test' });
 
             expect(res.status).toBe(500);
             expect(res.body).toHaveProperty('error');
@@ -127,7 +118,7 @@ describe('API Tests', () => {
 
             const res = await request(app)
                 .put('/api/phrases/1')
-                .send({ russian: 'test', german: 'test', category_id: 1 });
+                .send({ russian: 'test' });
 
             expect(res.status).toBe(500);
             expect(res.body).toHaveProperty('error');

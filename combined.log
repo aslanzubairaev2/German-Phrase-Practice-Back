@@ -31,3 +31,35 @@
 {"ip":"::ffff:127.0.0.1","level":"info","message":"Incoming request","method":"PUT","service":"german-phrase-api","timestamp":"2025-09-26T07:23:48.576Z","url":"/api/categories/1"}
 {"ip":"::ffff:127.0.0.1","level":"info","message":"Incoming request","method":"DELETE","service":"german-phrase-api","timestamp":"2025-09-26T07:23:48.585Z","url":"/api/categories/1"}
 {"ip":"::ffff:127.0.0.1","level":"info","message":"Incoming request","method":"DELETE","service":"german-phrase-api","timestamp":"2025-09-26T07:23:48.593Z","url":"/api/categories/1"}
+{"ip":"::1","level":"info","message":"Incoming request","method":"GET","service":"german-phrase-api","timestamp":"2025-09-26T07:24:44.287Z","url":"/api/initial-data","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36"}
+{"ip":"::1","level":"info","message":"Incoming request","method":"GET","service":"german-phrase-api","timestamp":"2025-09-26T07:26:53.541Z","url":"/api/initial-data","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36"}
+{"level":"info","message":"Backend server running on http://localhost:3001","port":3001,"service":"german-phrase-api","timestamp":"2025-09-26T07:28:58.482Z"}
+{"level":"info","message":"Backend server running on http://localhost:3001","port":3001,"service":"german-phrase-api","timestamp":"2025-09-26T07:29:10.489Z"}
+{"ip":"::ffff:127.0.0.1","level":"info","message":"Incoming request","method":"GET","service":"german-phrase-api","timestamp":"2025-09-26T07:29:10.545Z","url":"/api/initial-data"}
+{"ip":"::ffff:127.0.0.1","level":"info","message":"Incoming request","method":"GET","service":"german-phrase-api","timestamp":"2025-09-26T07:29:10.601Z","url":"/api/initial-data"}
+{"ip":"::ffff:127.0.0.1","level":"info","message":"Incoming request","method":"POST","service":"german-phrase-api","timestamp":"2025-09-26T07:29:10.632Z","url":"/api/phrases"}
+{"ip":"::ffff:127.0.0.1","level":"info","message":"Incoming request","method":"POST","service":"german-phrase-api","timestamp":"2025-09-26T07:29:10.673Z","url":"/api/phrases"}
+{"ip":"::ffff:127.0.0.1","level":"info","message":"Incoming request","method":"PUT","service":"german-phrase-api","timestamp":"2025-09-26T07:29:10.689Z","url":"/api/phrases/1"}
+{"ip":"::ffff:127.0.0.1","level":"info","message":"Incoming request","method":"PUT","service":"german-phrase-api","timestamp":"2025-09-26T07:29:10.703Z","url":"/api/phrases/1"}
+{"ip":"::ffff:127.0.0.1","level":"info","message":"Incoming request","method":"DELETE","service":"german-phrase-api","timestamp":"2025-09-26T07:29:10.720Z","url":"/api/phrases/1"}
+{"ip":"::ffff:127.0.0.1","level":"info","message":"Incoming request","method":"DELETE","service":"german-phrase-api","timestamp":"2025-09-26T07:29:10.730Z","url":"/api/phrases/1"}
+{"ip":"::ffff:127.0.0.1","level":"info","message":"Incoming request","method":"POST","service":"german-phrase-api","timestamp":"2025-09-26T07:29:10.748Z","url":"/api/categories"}
+{"ip":"::ffff:127.0.0.1","level":"info","message":"Incoming request","method":"PUT","service":"german-phrase-api","timestamp":"2025-09-26T07:29:10.764Z","url":"/api/categories/1"}
+{"ip":"::ffff:127.0.0.1","level":"info","message":"Incoming request","method":"DELETE","service":"german-phrase-api","timestamp":"2025-09-26T07:29:10.775Z","url":"/api/categories/1"}
+{"ip":"::ffff:127.0.0.1","level":"info","message":"Incoming request","method":"DELETE","service":"german-phrase-api","timestamp":"2025-09-26T07:29:10.784Z","url":"/api/categories/1"}
+{"level":"info","message":"Backend server running on http://localhost:3001","port":3001,"service":"german-phrase-api","timestamp":"2025-09-26T07:29:16.680Z"}
+{"level":"info","message":"Backend server running on http://localhost:3001","port":3001,"service":"german-phrase-api","timestamp":"2025-09-26T07:29:24.055Z"}
+{"ip":"::ffff:127.0.0.1","level":"info","message":"Incoming request","method":"GET","service":"german-phrase-api","timestamp":"2025-09-26T07:29:24.100Z","url":"/"}
+{"ip":"::ffff:127.0.0.1","level":"info","message":"Incoming request","method":"GET","service":"german-phrase-api","timestamp":"2025-09-26T07:29:24.131Z","url":"/api/initial-data"}
+{"ip":"::ffff:127.0.0.1","level":"info","message":"Incoming request","method":"GET","service":"german-phrase-api","timestamp":"2025-09-26T07:29:24.152Z","url":"/api/initial-data"}
+{"ip":"::ffff:127.0.0.1","level":"info","message":"Incoming request","method":"POST","service":"german-phrase-api","timestamp":"2025-09-26T07:29:24.173Z","url":"/api/phrases"}
+{"ip":"::ffff:127.0.0.1","level":"info","message":"Incoming request","method":"POST","service":"german-phrase-api","timestamp":"2025-09-26T07:29:24.203Z","url":"/api/phrases"}
+{"ip":"::ffff:127.0.0.1","level":"info","message":"Incoming request","method":"PUT","service":"german-phrase-api","timestamp":"2025-09-26T07:29:24.216Z","url":"/api/phrases/1"}
+{"ip":"::ffff:127.0.0.1","level":"info","message":"Incoming request","method":"PUT","service":"german-phrase-api","timestamp":"2025-09-26T07:29:24.226Z","url":"/api/phrases/1"}
+{"ip":"::ffff:127.0.0.1","level":"info","message":"Incoming request","method":"DELETE","service":"german-phrase-api","timestamp":"2025-09-26T07:29:24.238Z","url":"/api/phrases/1"}
+{"ip":"::ffff:127.0.0.1","level":"info","message":"Incoming request","method":"DELETE","service":"german-phrase-api","timestamp":"2025-09-26T07:29:24.247Z","url":"/api/phrases/1"}
+{"ip":"::ffff:127.0.0.1","level":"info","message":"Incoming request","method":"POST","service":"german-phrase-api","timestamp":"2025-09-26T07:29:24.260Z","url":"/api/categories"}
+{"ip":"::ffff:127.0.0.1","level":"info","message":"Incoming request","method":"PUT","service":"german-phrase-api","timestamp":"2025-09-26T07:29:24.270Z","url":"/api/categories/1"}
+{"ip":"::ffff:127.0.0.1","level":"info","message":"Incoming request","method":"DELETE","service":"german-phrase-api","timestamp":"2025-09-26T07:29:24.278Z","url":"/api/categories/1"}
+{"ip":"::ffff:127.0.0.1","level":"info","message":"Incoming request","method":"DELETE","service":"german-phrase-api","timestamp":"2025-09-26T07:29:24.285Z","url":"/api/categories/1"}
+{"level":"info","message":"Backend server running on http://localhost:3001","port":3001,"service":"german-phrase-api","timestamp":"2025-09-26T07:33:12.859Z"}
