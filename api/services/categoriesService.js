@@ -9,18 +9,9 @@ async function getAllCategories() {
 }
 
 async function createCategory({ id, name, color, is_foundational }) {
-    const categoryData = { name, color };
-    if (is_foundational !== undefined) {
-        categoryData.is_foundational = is_foundational;
-    }
-    // Не вставляем id, если он не предоставлен (Supabase сгенерирует его)
-    if (id !== undefined && id !== null) {
-        categoryData.id = id;
-    }
-
     const { data, error } = await supabase
         .from('categories')
-        .insert([categoryData])
+        .insert([{ id, name, color, is_foundational }])
         .select()
         .single();
     if (error) throw error;
