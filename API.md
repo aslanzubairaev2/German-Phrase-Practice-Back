@@ -10,6 +10,20 @@ This API provides endpoints for managing German phrases and categories for a lan
 
 ## Endpoints
 
+### Health Check
+
+#### GET /api/health
+
+Checks the health status of the server.
+
+**Response (200 OK):**
+```json
+{
+  "status": "ok",
+  "timestamp": "2023-10-01T12:00:00.000Z"
+}
+```
+
 ### Initial Data
 
 #### GET /api/initial-data
@@ -263,6 +277,16 @@ Common HTTP status codes:
 - 201: Created
 - 204: No Content
 - 500: Internal Server Error
+
+## Middleware
+
+The API uses several middleware for enhanced functionality:
+
+- **CORS**: Enables cross-origin requests
+- **JSON Parser**: Parses incoming JSON payloads
+- **Error Handler**: Centralized error handling and logging
+- **Rate Limiter**: Limits the number of requests per IP address
+- **Validation**: Validates incoming request data
 
 ## Testing
 
