@@ -8,10 +8,10 @@ async function getAllCategories() {
     return data;
 }
 
-async function createCategory({ id, name, color, is_foundational }) {
+async function createCategory({ name, color, is_foundational }) {
     const { data, error } = await supabase
         .from('categories')
-        .insert([{ id, name, color, is_foundational }])
+        .insert([{ name, color, is_foundational }])
         .select()
         .single();
     if (error) throw error;
@@ -23,10 +23,14 @@ async function updateCategory(id, { name, color }) {
         .from('categories')
         .update({ name, color })
         .eq('id', id)
-        .select()
-        .single();
+        .select();
     if (error) throw error;
-    return data;
+    if (data.length === 0) {
+        const notFoundError = new Error('Category not found');
+        notFoundError.status = 404;
+        throw notFoundError;
+    }
+    return data[0];
 }
 
 async function deleteCategory(id, migrationTargetId) {

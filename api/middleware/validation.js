@@ -27,17 +27,37 @@ const validatePhrase = (req, res, next) => {
 };
 
 const validateCategory = (req, res, next) => {
-  const { name, color } = req.body;
+   const { name, color, is_foundational } = req.body;
 
-  if (!name || typeof name !== 'string' || name.trim().length === 0) {
-    const error = new Error('Category name is required and must be a non-empty string');
-    error.status = 400;
-    error.isValidationError = true;
-    return next(error);
-  }
+   if (!name || typeof name !== 'string' || name.trim().length === 0) {
+      const error = new Error('Category name is required and must be a non-empty string');
+      error.status = 400;
+      error.isValidationError = true;
+      return next(error);
+   }
 
-  if (!color || typeof color !== 'string' || !/^#[0-9A-F]{6}$/i.test(color)) {
-    const error = new Error('Color is required and must be a valid hex color code');
+   if (!color || typeof color !== 'string' || !/^#[0-9A-F]{6}$/i.test(color)) {
+      const error = new Error('Color is required and must be a valid hex color code');
+      error.status = 400;
+      error.isValidationError = true;
+      return next(error);
+   }
+
+   if (is_foundational !== undefined && typeof is_foundational !== 'boolean') {
+      const error = new Error('is_foundational must be a boolean if provided');
+      error.status = 400;
+      error.isValidationError = true;
+      return next(error);
+   }
+
+   next();
+};
+
+const validateDeleteCategory = (req, res, next) => {
+  const { migrationTargetId } = req.body;
+
+  if (migrationTargetId !== undefined && (typeof migrationTargetId !== 'number' || migrationTargetId <= 0)) {
+    const error = new Error('Migration target ID must be a positive number if provided');
     error.status = 400;
     error.isValidationError = true;
     return next(error);
@@ -48,5 +68,6 @@ const validateCategory = (req, res, next) => {
 
 module.exports = {
   validatePhrase,
-  validateCategory
+  validateCategory,
+  validateDeleteCategory
 };

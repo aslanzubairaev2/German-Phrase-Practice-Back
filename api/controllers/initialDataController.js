@@ -1,4 +1,4 @@
-const { getInitialData } = require('../services/initialDataService');
+const { getInitialData, loadInitialData } = require('../services/initialDataService');
 
 async function getInitialDataHandler(req, res) {
     try {
@@ -10,6 +10,17 @@ async function getInitialDataHandler(req, res) {
     }
 }
 
+async function loadInitialDataHandler(req, res) {
+    try {
+        const result = await loadInitialData();
+        res.json(result);
+    } catch (error) {
+        console.error('Error loading initial data:', error);
+        res.status(500).json({ error: 'Failed to load initial data', details: error.message });
+    }
+}
+
 module.exports = {
-    getInitialDataHandler
+    getInitialDataHandler,
+    loadInitialDataHandler
 };

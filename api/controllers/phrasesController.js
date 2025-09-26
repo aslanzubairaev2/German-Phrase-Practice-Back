@@ -16,7 +16,8 @@ async function updatePhraseHandler(req, res) {
         res.json(data);
     } catch (error) {
         console.error(`Error updating phrase ${req.params.id}:`, error);
-        res.status(500).json({ error: 'Failed to update phrase', details: error.message });
+        const status = error.status || 500;
+        res.status(status).json({ error: 'Failed to update phrase', details: error.message });
     }
 }
 

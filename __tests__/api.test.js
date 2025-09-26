@@ -76,7 +76,7 @@ describe('API Tests', () => {
 
             const res = await request(app)
                 .post('/api/phrases')
-                .send({ russian: 'test', german: 'test' });
+                .send({ russian: 'test', german: 'test', category_id: 1 });
 
             expect(res.status).toBe(500);
             expect(res.body).toHaveProperty('error');
@@ -90,9 +90,7 @@ describe('API Tests', () => {
             supabase.from.mockReturnValue({
                 update: jest.fn().mockReturnValue({
                     eq: jest.fn().mockReturnValue({
-                        select: jest.fn().mockReturnValue({
-                            single: jest.fn().mockResolvedValue({ data: updatedPhrase, error: null })
-                        })
+                        select: jest.fn().mockResolvedValue({ data: [updatedPhrase], error: null })
                     })
                 })
             });
@@ -109,18 +107,16 @@ describe('API Tests', () => {
             supabase.from.mockReturnValue({
                 update: jest.fn().mockReturnValue({
                     eq: jest.fn().mockReturnValue({
-                        select: jest.fn().mockReturnValue({
-                            single: jest.fn().mockResolvedValue({ data: null, error: { message: 'Update error' } })
-                        })
+                        select: jest.fn().mockResolvedValue({ data: [], error: null })
                     })
                 })
             });
 
             const res = await request(app)
                 .put('/api/phrases/1')
-                .send({ russian: 'test' });
+                .send({ russian: 'test', german: 'test', category_id: 1 });
 
-            expect(res.status).toBe(500);
+            expect(res.status).toBe(404);
             expect(res.body).toHaveProperty('error');
         });
     });
@@ -154,7 +150,7 @@ describe('API Tests', () => {
 
     describe('POST /api/categories', () => {
         it('should create a category successfully', async () => {
-            const newCategory = { id: 1, name: 'Verbs', color: '#00ff00', is_foundational: false };
+            const newCategory = { name: 'Verbs', color: '#00ff00', is_foundational: false };
             const mockResponse = { id: 1, ...newCategory };
 
             supabase.from.mockReturnValue({
@@ -181,9 +177,7 @@ describe('API Tests', () => {
             supabase.from.mockReturnValue({
                 update: jest.fn().mockReturnValue({
                     eq: jest.fn().mockReturnValue({
-                        select: jest.fn().mockReturnValue({
-                            single: jest.fn().mockResolvedValue({ data: updatedCategory, error: null })
-                        })
+                        select: jest.fn().mockResolvedValue({ data: [updatedCategory], error: null })
                     })
                 })
             });

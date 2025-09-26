@@ -8,25 +8,29 @@ async function getAllPhrases() {
     return data;
 }
 
-async function createPhrase({ russian, german, category_id }) {
+async function createPhrase({ russian, german, category_id, transcription, context }) {
     const { data, error } = await supabase
         .from('phrases')
-        .insert([{ russian, german, category_id }])
+        .insert([{ russian, german, category_id, transcription, context }])
         .select()
         .single();
     if (error) throw error;
     return data;
 }
 
-async function updatePhrase(id, { russian, german, category_id }) {
+async function updatePhrase(id, { russian, german, category_id, transcription, context, masteryLevel, lastReviewedAt, nextReviewAt, knowCount, knowStreak, isMastered, lapses }) {
     const { data, error } = await supabase
         .from('phrases')
-        .update({ russian, german, category_id })
+        .update({ russian, german, category_id, transcription, context, masteryLevel, lastReviewedAt, nextReviewAt, knowCount, knowStreak, isMastered, lapses })
         .eq('id', id)
-        .select()
-        .single();
+        .select();
     if (error) throw error;
-    return data;
+    if (data.length === 0) {
+        const notFoundError = new Error('Phrase not found');
+        notFoundError.status = 404;
+        throw notFoundError;
+    }
+    return data[0];
 }
 
 async function deletePhrase(id) {
