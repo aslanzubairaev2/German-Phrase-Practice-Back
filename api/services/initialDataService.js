@@ -7,32 +7,42 @@ const fs = require('fs');
 const path = require('path');
 
 async function getInitialData(userId) {
-    const categories = await getAllCategories(userId);
-    const phrasesData = await getAllPhrases(userId);
+    try {
+        console.log(`Fetching initial data for userId: ${userId}`);
+        const categories = await getAllCategories(userId);
+        console.log(`Fetched ${categories.length} categories`);
+        const phrasesData = await getAllPhrases(userId);
+        console.log(`Fetched ${phrasesData.length} phrases`);
 
-    const phrases = phrasesData.map(p => ({
-        id: p.id,
-        russian: p.russian,
-        german: p.german,
-        category: p.category_id,
-        transcription: p.transcription,
-        context: p.context,
-        masteryLevel: p.masteryLevel || 0,
-        lastReviewedAt: p.lastReviewedAt,
-        nextReviewAt: p.nextReviewAt || Date.now(),
-        knowCount: p.knowCount || 0,
-        knowStreak: p.knowStreak || 0,
-        isMastered: p.isMastered || false,
-        lapses: p.lapses || 0,
-    }));
+        const phrases = phrasesData.map(p => ({
+            id: p.id,
+            russian: p.russian,
+            german: p.german,
+            category: p.category_id,
+            transcription: p.transcription,
+            context: p.context,
+            masteryLevel: p.masteryLevel || 0,
+            lastReviewedAt: p.lastReviewedAt,
+            nextReviewAt: p.nextReviewAt || Date.now(),
+            knowCount: p.knowCount || 0,
+            knowStreak: p.knowStreak || 0,
+            isMastered: p.isMastered || false,
+            lapses: p.lapses || 0,
+        }));
 
-    return { categories, phrases };
+        return { categories, phrases };
+    } catch (error) {
+        console.error('Error in getInitialData:', error);
+        throw error; // Re-throw to let controller handle it
+    }
 }
 
 async function loadInitialData(userId) {
-    const filePath = path.join(__dirname, '../../data/initial-data.json');
-    const rawData = fs.readFileSync(filePath, 'utf8');
-    const data = JSON.parse(rawData);
+    try {
+        console.log(`Loading initial data for userId: ${userId}`);
+        const filePath = path.join(__dirname, '../../data/initial-data.json');
+        const rawData = fs.readFileSync(filePath, 'utf8');
+        const data = JSON.parse(rawData);
 
     const ruData = data.data.ru;
 
@@ -77,7 +87,11 @@ async function loadInitialData(userId) {
         }
     }
 
-    return { message: 'Initial data loaded successfully' };
+        return { message: 'Initial data loaded successfully' };
+    } catch (error) {
+        console.error('Error in loadInitialData:', error);
+        throw error;
+    }
 }
 
 module.exports = {
