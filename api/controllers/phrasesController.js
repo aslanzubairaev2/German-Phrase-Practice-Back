@@ -3,7 +3,8 @@ const { createPhrase, updatePhrase, deletePhrase } = require('../services/phrase
 async function createPhraseHandler(req, res) {
     try {
         const userId = req.user.id;
-        const data = await createPhrase(userId, req.body);
+        const supabaseClient = req.supabaseClient;
+        const data = await createPhrase(supabaseClient, userId, req.body);
         res.status(201).json(data);
     } catch (error) {
         console.error('Error creating phrase:', error);
@@ -14,7 +15,8 @@ async function createPhraseHandler(req, res) {
 async function updatePhraseHandler(req, res) {
     try {
         const userId = req.user.id;
-        const data = await updatePhrase(userId, req.params.id, req.body);
+        const supabaseClient = req.supabaseClient;
+        const data = await updatePhrase(supabaseClient, userId, req.params.id, req.body);
         res.json(data);
     } catch (error) {
         console.error(`Error updating phrase ${req.params.id}:`, error);
@@ -26,7 +28,8 @@ async function updatePhraseHandler(req, res) {
 async function deletePhraseHandler(req, res) {
     try {
         const userId = req.user.id;
-        await deletePhrase(userId, req.params.id);
+        const supabaseClient = req.supabaseClient;
+        await deletePhrase(supabaseClient, userId, req.params.id);
         res.status(204).send();
     } catch (error) {
         console.error(`Error deleting phrase ${req.params.id}:`, error);

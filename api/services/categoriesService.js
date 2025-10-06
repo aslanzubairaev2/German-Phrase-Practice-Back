@@ -1,7 +1,5 @@
-const supabase = require('../../supabaseClient');
-
-async function getAllCategories(userId) {
-    const { data, error } = await supabase
+async function getAllCategories(supabaseClient, userId) {
+    const { data, error } = await supabaseClient
         .from('categories')
         .select('*')
         .eq('user_id', userId);
@@ -9,9 +7,9 @@ async function getAllCategories(userId) {
     return data;
 }
 
-async function createCategory(userId, { name, color, is_foundational }) {
+async function createCategory(supabaseClient, userId, { name, color, is_foundational }) {
     // Check if category with this name already exists for the user
-    const { data: existing, error: checkError } = await supabase
+    const { data: existing, error: checkError } = await supabaseClient
         .from('categories')
         .select('id')
         .eq('user_id', userId)
@@ -28,7 +26,7 @@ async function createCategory(userId, { name, color, is_foundational }) {
         throw error;
     }
 
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
         .from('categories')
         .insert([{ user_id: userId, name, color, is_foundational }])
         .select()
@@ -37,8 +35,8 @@ async function createCategory(userId, { name, color, is_foundational }) {
     return data;
 }
 
-async function updateCategory(userId, id, { name, color }) {
-    const { data, error } = await supabase
+async function updateCategory(supabaseClient, userId, id, { name, color }) {
+    const { data, error } = await supabaseClient
         .from('categories')
         .update({ name, color })
         .eq('id', id)
@@ -53,11 +51,11 @@ async function updateCategory(userId, id, { name, color }) {
     return data[0];
 }
 
-async function deleteCategory(userId, id, migrationTargetId) {
+async function deleteCategory(supabaseClient, userId, id, migrationTargetId) {
     try {
         // Если есть фразы для миграции, обновляем их
         if (migrationTargetId) {
-            const { error: updateError } = await supabase
+            const { error: updateError } = await supabaseClient
                 .from('phrases')
                 .update({ category_id: migrationTargetId })
                 .eq('category_id', id)
@@ -65,7 +63,7 @@ async function deleteCategory(userId, id, migrationTargetId) {
             if (updateError) throw updateError;
         } else {
             // Иначе (или если миграция не нужна), удаляем связанные фразы
-            const { error: deletePhrasesError } = await supabase
+            const { error: deletePhrasesError } = await supabaseClient
                 .from('phrases')
                 .delete()
                 .eq('category_id', id)
@@ -74,7 +72,7 @@ async function deleteCategory(userId, id, migrationTargetId) {
         }
 
         // Удаляем саму категорию
-        const { error: deleteCategoryError } = await supabase
+        const { error: deleteCategoryError } = await supabaseClient
             .from('categories')
             .delete()
             .eq('id', id)

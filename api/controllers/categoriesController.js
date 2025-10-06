@@ -3,12 +3,13 @@ const { createCategory, updateCategory, deleteCategory } = require('../services/
 async function createCategoryHandler(req, res) {
     try {
         const userId = req.user.id;
+        const supabaseClient = req.supabaseClient;
         const categoryData = {
             name: req.body.name,
             color: req.body.color,
             is_foundational: req.body.is_foundational !== undefined ? req.body.is_foundational : false
         };
-        const data = await createCategory(userId, categoryData);
+        const data = await createCategory(supabaseClient, userId, categoryData);
         res.status(201).json(data);
     } catch (error) {
         console.error('Error creating category:', error);
@@ -19,7 +20,8 @@ async function createCategoryHandler(req, res) {
 async function updateCategoryHandler(req, res) {
     try {
         const userId = req.user.id;
-        const data = await updateCategory(userId, req.params.id, req.body);
+        const supabaseClient = req.supabaseClient;
+        const data = await updateCategory(supabaseClient, userId, req.params.id, req.body);
         res.json(data);
     } catch (error) {
         console.error(`Error updating category ${req.params.id}:`, error);
@@ -31,7 +33,8 @@ async function updateCategoryHandler(req, res) {
 async function deleteCategoryHandler(req, res) {
     try {
         const userId = req.user.id;
-        await deleteCategory(userId, req.params.id, req.body.migrationTargetId);
+        const supabaseClient = req.supabaseClient;
+        await deleteCategory(supabaseClient, userId, req.params.id, req.body.migrationTargetId);
         res.status(204).send();
     } catch (error) {
         console.error(`Error deleting category ${req.params.id}:`, error);

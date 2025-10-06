@@ -3,8 +3,9 @@ const { getInitialData, loadInitialData } = require('../services/initialDataServ
 async function getInitialDataHandler(req, res) {
     try {
         const userId = req.user.id;
+        const supabaseClient = req.supabaseClient;
         console.log(`Handling initial data request for user: ${userId}`);
-        const data = await getInitialData(userId);
+        const data = await getInitialData(supabaseClient, userId);
         res.json(data);
     } catch (error) {
         console.error('Error fetching initial data:', error);
@@ -28,8 +29,9 @@ async function getInitialDataHandler(req, res) {
 async function loadInitialDataHandler(req, res) {
     try {
         const userId = req.user.id;
+        const supabaseClient = req.supabaseClient;
         console.log(`Handling load initial data request for user: ${userId}`);
-        const result = await loadInitialData(userId);
+        const result = await loadInitialData(supabaseClient, userId);
         res.json(result);
     } catch (error) {
         console.error('Error loading initial data:', error);

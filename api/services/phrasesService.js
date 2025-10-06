@@ -1,7 +1,5 @@
-const supabase = require('../../supabaseClient');
-
-async function getAllPhrases(userId) {
-    const { data, error } = await supabase
+async function getAllPhrases(supabaseClient, userId) {
+    const { data, error } = await supabaseClient
         .from('phrases')
         .select('*')
         .eq('user_id', userId);
@@ -9,8 +7,8 @@ async function getAllPhrases(userId) {
     return data;
 }
 
-async function createPhrase(userId, { russian, german, category_id, transcription, context }) {
-    const { data, error } = await supabase
+async function createPhrase(supabaseClient, userId, { russian, german, category_id, transcription, context }) {
+    const { data, error } = await supabaseClient
         .from('phrases')
         .insert([{ user_id: userId, russian, german, category_id, transcription, context }])
         .select()
@@ -19,8 +17,8 @@ async function createPhrase(userId, { russian, german, category_id, transcriptio
     return data;
 }
 
-async function updatePhrase(userId, id, { russian, german, category_id, transcription, context, masteryLevel, lastReviewedAt, nextReviewAt, knowCount, knowStreak, isMastered, lapses }) {
-    const { data, error } = await supabase
+async function updatePhrase(supabaseClient, userId, id, { russian, german, category_id, transcription, context, masteryLevel, lastReviewedAt, nextReviewAt, knowCount, knowStreak, isMastered, lapses }) {
+    const { data, error } = await supabaseClient
         .from('phrases')
         .update({ russian, german, category_id, transcription, context, masteryLevel, lastReviewedAt, nextReviewAt, knowCount, knowStreak, isMastered, lapses })
         .eq('id', id)
@@ -35,8 +33,8 @@ async function updatePhrase(userId, id, { russian, german, category_id, transcri
     return data[0];
 }
 
-async function deletePhrase(userId, id) {
-    const { error } = await supabase
+async function deletePhrase(supabaseClient, userId, id) {
+    const { error } = await supabaseClient
         .from('phrases')
         .delete()
         .eq('id', id)
