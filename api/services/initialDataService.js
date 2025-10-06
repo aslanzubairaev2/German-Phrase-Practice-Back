@@ -1,3 +1,4 @@
+const supabase = require('../../supabaseClient');
 const { getAllCategories } = require('./categoriesService');
 const { getAllPhrases } = require('./phrasesService');
 const { createCategory } = require('./categoriesService');
@@ -5,9 +6,9 @@ const { createPhrase } = require('./phrasesService');
 const fs = require('fs');
 const path = require('path');
 
-async function getInitialData() {
-    const categories = await getAllCategories();
-    const phrasesData = await getAllPhrases();
+async function getInitialData(userId) {
+    const categories = await getAllCategories(userId);
+    const phrasesData = await getAllPhrases(userId);
 
     const phrases = phrasesData.map(p => ({
         id: p.id,
@@ -28,7 +29,7 @@ async function getInitialData() {
     return { categories, phrases };
 }
 
-async function loadInitialData() {
+async function loadInitialData(userId) {
     const filePath = path.join(__dirname, '../../data/initial-data.json');
     const rawData = fs.readFileSync(filePath, 'utf8');
     const data = JSON.parse(rawData);
@@ -40,19 +41,33 @@ async function loadInitialData() {
 
     // Load categories first
     for (const category of ruData.categories) {
-        const newCategory = await createCategory({
-            name: category.name,
-            color: category.color,
-            is_foundational: category.isFoundational !== undefined ? category.isFoundational : false
-        });
-        categoryMapping[category.id] = newCategory.id;
+        // Check if category already exists for the user
+        const { data: existingCategory, error: checkError } = await supabase
+            .from('categories')
+            .select('id')
+            .eq('user_id', userId)
+            .eq('name', category.name)
+            .single();
+
+        let categoryId;
+        if (existingCategory) {
+            categoryId = existingCategory.id;
+        } else {
+            const newCategory = await createCategory(userId, {
+                name: category.name,
+                color: category.color,
+                is_foundational: category.isFoundational !== undefined ? category.isFoundational : false
+            });
+            categoryId = newCategory.id;
+        }
+        categoryMapping[category.id] = categoryId;
     }
 
     // Load phrases
     for (const phrase of ruData.phrases) {
         const categoryId = categoryMapping[phrase.category];
         if (categoryId) {
-            await createPhrase({
+            await createPhrase(userId, {
                 russian: phrase.russian,
                 german: phrase.german,
                 category_id: categoryId,
