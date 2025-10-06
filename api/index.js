@@ -21,8 +21,10 @@ const phrasesRoutes = require('./routes/phrasesRoutes');
 const categoriesRoutes = require('./routes/categoriesRoutes');
 const initialDataRoutes = require('./routes/initialDataRoutes');
 const healthRoutes = require('./routes/healthRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 // Использовать роуты
+app.use('/api/auth', authRoutes);
 app.use('/api/phrases', phrasesRoutes);
 app.use('/api/categories', categoriesRoutes);
 app.use('/api', initialDataRoutes);

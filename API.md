@@ -4,9 +4,169 @@
 
 This API provides endpoints for managing German phrases and categories for a language learning application. It uses Supabase as the database and is built with Express.js.
 
-**Base URL:** `http://localhost:3001/api` (or as configured in environment)
+**Base URL:**
+- **Development:** `http://localhost:3001/api`
+- **Production:** `https://german-phrase-practice-back.vercel.app/api`
 
-**Authentication:** Not implemented (uses Supabase client directly)
+**Authentication:** JWT-based authentication using Supabase. All protected endpoints require a Bearer token in the Authorization header.
+
+## Authentication
+
+### Overview
+
+The API uses JWT (JSON Web Tokens) for authentication. Users authenticate through Supabase Auth, and the API verifies tokens on protected endpoints.
+
+### Headers
+
+All protected requests must include:
+```
+Authorization: Bearer <jwt_token>
+```
+
+### Endpoints
+
+#### GET /api/auth/profile
+
+Retrieves the authenticated user's profile information.
+
+**Headers:**
+- `Authorization: Bearer <token>`
+
+**Response (200 OK):**
+```json
+{
+  "id": "user-uuid",
+  "email": "user@example.com",
+  "created_at": "2025-01-01T00:00:00.000Z"
+}
+```
+
+#### GET /api/auth/verify
+
+Verifies the provided JWT token.
+
+**Headers:**
+- `Authorization: Bearer <token>`
+
+**Response (200 OK):**
+```json
+{
+  "valid": true,
+  "user": {
+    "id": "user-uuid",
+    "email": "user@example.com"
+  }
+}
+```
+
+### Error Responses
+
+**401 Unauthorized:**
+```json
+{
+  "error": "No token provided"
+}
+```
+
+or
+
+```json
+{
+  "error": "Invalid token"
+}
+```
+
+## Frontend Integration Guide
+
+📖 **Detailed Migration Guide:** See `FRONTEND_MIGRATION_GUIDE.md` for step-by-step instructions on updating your frontend for authentication.
+
+### Authentication Flow
+
+1. **User Registration/Login:**
+   - Use Supabase Auth SDK for registration and login
+   - Supabase handles user creation and JWT token generation
+
+2. **Token Management:**
+   - Store JWT token securely (localStorage/sessionStorage)
+   - Include token in all API requests: `Authorization: Bearer <token>`
+
+3. **API Requests:**
+   ```javascript
+   // Example with fetch
+   const response = await fetch('/api/phrases', {
+     headers: {
+       'Authorization': `Bearer ${userToken}`,
+       'Content-Type': 'application/json'
+     }
+   });
+   ```
+
+4. **Error Handling:**
+   - Handle 401 responses by redirecting to login
+   - Refresh token if needed (Supabase handles this automatically)
+
+### API Configuration
+
+Configure API base URL based on environment:
+
+```javascript
+// API URLs
+const LOCAL_API_URL = 'http://localhost:3001/api';
+const PRODUCTION_API_URL = 'https://german-phrase-practice-back.vercel.app/api';
+
+// Determine API URL
+const API_BASE_URL = process.env.NODE_ENV === 'production'
+  ? PRODUCTION_API_URL
+  : LOCAL_API_URL;
+
+// Use in API calls
+const response = await fetch(`${API_BASE_URL}/phrases`, {
+  headers: {
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  }
+});
+```
+
+### Supabase Auth Setup
+
+```javascript
+import { createClient } from '@supabase/supabase-js'
+
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_ANON_KEY
+)
+
+// Login
+const { data, error } = await supabase.auth.signInWithPassword({
+  email: 'user@example.com',
+  password: 'password'
+})
+
+// Get user session
+const { data: { session } } = await supabase.auth.getSession()
+const token = session?.access_token
+```
+
+### Data Migration
+
+After user login, call `/api/initial-data` to load user's data. If user is new, they can load initial data via `/api/initial-data` POST request.
+
+### Breaking Changes
+
+- **All endpoints now require authentication**
+- **Data is filtered by user_id** - each user sees only their own data
+- **Initial data loading** moved to authenticated endpoint
+
+### Migration Steps for Frontend
+
+1. Add Supabase Auth integration
+2. Update all API calls to include Authorization header
+3. Add login/register UI
+4. Handle token refresh and logout
+5. Update data loading logic for user-specific data
+6. Add error handling for 401 responses
 
 ## Endpoints
 
@@ -20,7 +180,7 @@ Checks the health status of the server.
 ```json
 {
   "status": "ok",
-  "timestamp": "2023-10-01T12:00:00.000Z"
+  "timestamp": "2025-10-01T12:00:00.000Z"
 }
 ```
 
@@ -55,8 +215,7 @@ Retrieves all categories and phrases with additional frontend-specific fields fo
       "knowCount": 0,
       "knowStreak": 0,
       "isMastered": false,
-      "lapses": 0,
-      "distractors": ["hallo", "tschüss"]
+      "lapses": 0
     }
   ]
 }
@@ -66,6 +225,25 @@ Retrieves all categories and phrases with additional frontend-specific fields fo
 ```json
 {
   "error": "Failed to fetch initial data",
+  "details": "Error message"
+}
+```
+
+#### POST /api/initial-data
+
+Loads initial data from a predefined JSON file into the database. This endpoint is used to populate the database with default categories and phrases.
+
+**Response (200 OK):**
+```json
+{
+  "message": "Initial data loaded successfully"
+}
+```
+
+**Error Response (500):**
+```json
+{
+  "error": "Failed to load initial data",
   "details": "Error message"
 }
 ```
@@ -187,7 +365,6 @@ Creates a new category.
 **Request Body:**
 ```json
 {
-  "id": 1,
   "name": "Verbs",
   "color": "#00ff00",
   "is_foundational": false
@@ -310,7 +487,6 @@ Deletes a category. If `migrationTargetId` is provided in the request body, asso
 - `category_id` (number): Reference to category
 - `transcription` (string, optional): Pronunciation guide
 - `context` (string, optional): Usage context
-- `distractors` (array, optional): Alternative answers for quizzes
 
 ### Category
 - `id` (number): Unique identifier

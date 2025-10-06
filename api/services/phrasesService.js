@@ -1,28 +1,30 @@
 const supabase = require('../../supabaseClient');
 
-async function getAllPhrases() {
+async function getAllPhrases(userId) {
     const { data, error } = await supabase
         .from('phrases')
-        .select('*');
+        .select('*')
+        .eq('user_id', userId);
     if (error) throw error;
     return data;
 }
 
-async function createPhrase({ russian, german, category_id, transcription, context }) {
+async function createPhrase(userId, { russian, german, category_id, transcription, context }) {
     const { data, error } = await supabase
         .from('phrases')
-        .insert([{ russian, german, category_id, transcription, context }])
+        .insert([{ user_id: userId, russian, german, category_id, transcription, context }])
         .select()
         .single();
     if (error) throw error;
     return data;
 }
 
-async function updatePhrase(id, { russian, german, category_id, transcription, context, masteryLevel, lastReviewedAt, nextReviewAt, knowCount, knowStreak, isMastered, lapses }) {
+async function updatePhrase(userId, id, { russian, german, category_id, transcription, context, masteryLevel, lastReviewedAt, nextReviewAt, knowCount, knowStreak, isMastered, lapses }) {
     const { data, error } = await supabase
         .from('phrases')
         .update({ russian, german, category_id, transcription, context, masteryLevel, lastReviewedAt, nextReviewAt, knowCount, knowStreak, isMastered, lapses })
         .eq('id', id)
+        .eq('user_id', userId)
         .select();
     if (error) throw error;
     if (data.length === 0) {
@@ -33,11 +35,12 @@ async function updatePhrase(id, { russian, german, category_id, transcription, c
     return data[0];
 }
 
-async function deletePhrase(id) {
+async function deletePhrase(userId, id) {
     const { error } = await supabase
         .from('phrases')
         .delete()
-        .eq('id', id);
+        .eq('id', id)
+        .eq('user_id', userId);
     if (error) throw error;
 }
 

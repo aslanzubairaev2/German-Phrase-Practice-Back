@@ -2,7 +2,8 @@ const { createPhrase, updatePhrase, deletePhrase } = require('../services/phrase
 
 async function createPhraseHandler(req, res) {
     try {
-        const data = await createPhrase(req.body);
+        const userId = req.user.id;
+        const data = await createPhrase(userId, req.body);
         res.status(201).json(data);
     } catch (error) {
         console.error('Error creating phrase:', error);
@@ -12,7 +13,8 @@ async function createPhraseHandler(req, res) {
 
 async function updatePhraseHandler(req, res) {
     try {
-        const data = await updatePhrase(req.params.id, req.body);
+        const userId = req.user.id;
+        const data = await updatePhrase(userId, req.params.id, req.body);
         res.json(data);
     } catch (error) {
         console.error(`Error updating phrase ${req.params.id}:`, error);
@@ -23,7 +25,8 @@ async function updatePhraseHandler(req, res) {
 
 async function deletePhraseHandler(req, res) {
     try {
-        await deletePhrase(req.params.id);
+        const userId = req.user.id;
+        await deletePhrase(userId, req.params.id);
         res.status(204).send();
     } catch (error) {
         console.error(`Error deleting phrase ${req.params.id}:`, error);
