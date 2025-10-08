@@ -7,20 +7,20 @@ async function getAllPhrases(supabaseClient, userId) {
     return data;
 }
 
-async function createPhrase(supabaseClient, userId, { russian, german, category_id, transcription, context }) {
+async function createPhrase(supabaseClient, userId, { native_text, learning_text, category_id, transcription, context }) {
     const { data, error } = await supabaseClient
         .from('phrases')
-        .insert([{ user_id: userId, russian, german, category_id, transcription, context }])
+        .insert([{ user_id: userId, native_text, learning_text, category_id, transcription, context }])
         .select()
         .single();
     if (error) throw error;
     return data;
 }
 
-async function updatePhrase(supabaseClient, userId, id, { russian, german, category_id, transcription, context, masteryLevel, lastReviewedAt, nextReviewAt, knowCount, knowStreak, isMastered, lapses }) {
+async function updatePhrase(supabaseClient, userId, id, { native_text, learning_text, category_id, transcription, context, masteryLevel, lastReviewedAt, nextReviewAt, knowCount, knowStreak, isMastered, lapses }) {
     const { data, error } = await supabaseClient
         .from('phrases')
-        .update({ russian, german, category_id, transcription, context, masteryLevel, lastReviewedAt, nextReviewAt, knowCount, knowStreak, isMastered, lapses })
+        .update({ native_text, learning_text, category_id, transcription, context, masteryLevel, lastReviewedAt, nextReviewAt, knowCount, knowStreak, isMastered, lapses })
         .eq('id', id)
         .eq('user_id', userId)
         .select();

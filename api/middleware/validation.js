@@ -1,16 +1,16 @@
 // Middleware для валидации данных
 const validatePhrase = (req, res, next) => {
-  const { russian, german, category_id } = req.body;
+  const { native_text, learning_text, category_id } = req.body;
 
-  if (!russian || typeof russian !== 'string' || russian.trim().length === 0) {
-    const error = new Error('Russian text is required and must be a non-empty string');
+  if (!native_text || typeof native_text !== 'string' || native_text.trim().length === 0) {
+    const error = new Error('Native text is required and must be a non-empty string');
     error.status = 400;
     error.isValidationError = true;
     return next(error);
   }
 
-  if (!german || typeof german !== 'string' || german.trim().length === 0) {
-    const error = new Error('German text is required and must be a non-empty string');
+  if (!learning_text || typeof learning_text !== 'string' || learning_text.trim().length === 0) {
+    const error = new Error('Learning text is required and must be a non-empty string');
     error.status = 400;
     error.isValidationError = true;
     return next(error);
