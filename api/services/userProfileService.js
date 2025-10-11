@@ -35,19 +35,32 @@ async function createDefaultProfile(supabaseClient, userId) {
 }
 
 async function updateUserProfile(supabaseClient, userId, { ui_language, native_language, learning_language }) {
+    const payload = {
+        ui_language,
+        native_language,
+        learning_language,
+        updated_at: new Date().toISOString()
+    };
+
     const { data, error } = await supabaseClient
         .from('user_profiles')
-        .update({
-            ui_language,
-            native_language,
-            learning_language,
-            updated_at: new Date().toISOString()
-        })
+        .update(payload)
         .eq('user_id', userId)
         .select()
-        .single();
+        .maybeSingle();
 
-    if (error) throw error;
+    if (error) {
+        if (error.code === 'PGRST116') {
+            return upsertUserProfile(supabaseClient, userId, { ui_language, native_language, learning_language });
+        }
+        throw error;
+    }
+
+    if (!data) {
+        // No existing profile for this user yet - create one instead of failing.
+        return upsertUserProfile(supabaseClient, userId, { ui_language, native_language, learning_language });
+    }
+
     return data;
 }
 
